@@ -5,6 +5,12 @@ Beyond a typical home computer, VST requires video from an HD camera, many of wh
 for less than $100 (e.g. theFoscam Fi9103EP, power over Ethernet, outdoor camera). You need to have
 OpenCV c 2.4.11 installed.
 
+As of 14 Feb 2016, I have not yet posted a Wintel64 executable.  Also the source and executable for
+the post-processor for the video output of VST are not here yet.  I expect them to be posted in the
+next day or two.  In the meantime, if you plan to use VST, get OpenCV 2.4.11 installed.  You need it.
+Downloading and installing the OpenCV 2.4.11 binary (i.e. not compiling and installing from source) is OK.
+That's fairly painless.
+
 # Set-up Checklist
 1) You really want 100 feet or more of open view (a maple tree trunk in the foreground is OK) of
 the street. Your speed measuring zone should be at least one second wide for a vehicle going
