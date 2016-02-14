@@ -26,13 +26,15 @@ vehicle moving a constant velocity cross the lens moves at different pixel rates
 as it proceeds from an edge towards the center and back towards the far edge. My tracker is
 what’s known as a “piecewise, linear least squares” tracker. The piecewise part (throwing out
 the oldest data) is what allows it to adapt to changing pixel rates as a vehicle moves through
-the scene. Setting up as you see in Figure 2 helps the tracker produce high quality results.
+the scene. Setting up as you see in Figure 2 of the included overview
+(in Docs/Overview and User Manual_v2.pdf) helps the tracker produce high quality results.
 
 4) If you’re recompiling, you’ll need OpenCV 2.4.11 installed to have a successful compile. If
 you’re executing a provided executable you’ll still need OpenCV 2.4.11 runtime libraries (dll’s in
 Windows) before you can execute successfully.
 
 5) Set critical one time setup values in VST.cfg. These values are described in the appendix of the included pdf under docs.
+
 6) Create a location (the “prefixPath”) for five directories used by VST (and the final highlights
 video processor):
 
