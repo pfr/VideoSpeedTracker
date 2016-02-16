@@ -8,6 +8,8 @@ OpenCV 2.4.11 installed.
 Win7telx64 executables have been added on 15 Feb 2016.  See the section named "Installing executables" in the
 User Manual.
 
+Video example at  https://www.youtube.com/watch?v=1HVkKysDvGA
+
 # Set-up Checklist
 1) You really want 100 feet or more of open view (a maple tree trunk in the foreground is OK) of
 the street. Your speed measuring zone should be at least one second wide for a vehicle going
