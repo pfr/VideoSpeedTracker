@@ -2,7 +2,8 @@
 The Video Speed Tracker (VST) is an open source, technically sound, vehicle speed measuring system
 that can track bidirectional traffic, one lane in each direction (e.g. a typical residential street). 
 Beyond a typical home computer, VST requires video from an HD camera, many of which can be purchased
-for less than $100 (e.g. theFoscam Fi9103EP, power over Ethernet, outdoor camera). You need to have
+for less than $100 (e.g. the Foscam Fi9103EP, power over Ethernet, outdoor camera.  If you buy a POE camera,
+be sure to buy something like the TP-LINK TL-PoE150S - about $18 - to power it.). You need to have
 OpenCV 2.4.11 installed.
 
 Win7telx64 executables have been added on 15 Feb 2016.  See the section named "Installing executables" in the
@@ -32,7 +33,7 @@ as it proceeds from an edge towards the center and back towards the far edge. My
 what’s known as a “piecewise, linear least squares” tracker. The piecewise part (throwing out
 the oldest data) is what allows it to adapt to changing pixel rates as a vehicle moves through
 the scene. Setting up as you see in Figure 2 of the included overview
-(in Docs/Overview and User Manual_v2.pdf) helps the tracker produce high quality results.
+(in Docs/Overview and User Manual_v3.pdf) helps the tracker produce high quality results.
 
 4) If you’re recompiling, you’ll need OpenCV 2.4.11 installed to have a successful compile. If
 you’re executing a provided executable you’ll still need OpenCV 2.4.11 runtime libraries (dll’s in
@@ -58,7 +59,7 @@ directory if you answer “*” when asked for which file in a directory full of
 the IPCam directory, I create subdirectories with syntax yyyymmdd (e.g. 20160205) in which I place
 that day’s video files.
 
-A much more detailed version of this readme is available in "Docs/Overview and User Manual_v2.pdf".
+A much more detailed version of this readme is available in "Docs/Overview and User Manual_v3.pdf".
 
 ## Original Author and Development Lead
 - Paul Reynolds (reynolds@virginia.edu) www.cs.virginia.edu/~pfr
