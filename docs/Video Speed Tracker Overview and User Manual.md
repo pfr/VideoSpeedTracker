@@ -36,14 +36,7 @@ passing traffic. VST outputs:
     purpose of verifying speed tracking quality before making
     highlights public.
 
-    The final highlights video processor takes in a highlights video
-    produced by VST and produces a final video file meant to depict
-    carefully reviewed speeding vehicles. The highlights video processor
-    supports user viewing of each vehicle as it passes through the speed
-    measuring zone, replay, slow replay, deletion and keeping for the
-    final highlights video. The final highlights video should be the
-    sort of thing your lawyer would be comfortable with you posting to
-    the internet.
+The final highlights video processor takes in a highlights video produced by VST and produces a final video file meant to depict carefully reviewed speeding vehicles.  The highlights video processor supports user viewing of each vehicle as it passes through the speed measuring zone, replay, slow replay, deletion and keeping for the final highlights video.  The final highlights video should be the sort of thing your lawyer would be comfortable with you posting to the internet.
 
 **Using VST**
 
@@ -61,7 +54,7 @@ where you have done a one-time setup of the &lt;path prefix&gt;
 directory, e.g. “g:\\locustData”. Figure 1 depicts the steps I went
 through to select the directory “2016 02 05”, located in
 “g:\\\\locustData\\IPCam” on my system, and containing all of my video
-files from February 5^th^, 2016. Next I selected the specific file
+files from February 5th, 2016. Next I selected the specific file
 “manual\_20160205\_115810.avi” for processing.
 
 Next up is the question asking whether the *Analysis* *Box* (yellow
@@ -70,9 +63,13 @@ Currently, if you answer that the analysis box, etc. are not OK, the
 program aborts (because problems would be fixed by changing values in
 VST.cfg).
 
-![Figure 1.  Command Line Setup](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig01.jpg)
+![Figure 1.  Command Line Setup][Fig1]
 
-![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig02.jpg)
+**Figure 1.**  Command Line Setup
+
+![Figure 2.  Yellow Analysis Box and Other Markings.][Fig2]
+
+**Figure 2.**  Yellow Analysis Box and Other Markings.
 
 The yellow-edged analysis box depicted in Figure 2 serves a number of
 purposes: It crops out across the street neighbors’ houses, it removes
@@ -93,12 +90,11 @@ speed measuring zone at the speed limit (multiple vehicles, many times
 in my case, to be certain). A first order speed estimate for a vehicle
 analyzed by the Video Speed Tracker is derived by determining the value
 of:
-
+```
 Observed vehicle speed =
-
 int (0.5 + ( (observed vehicle frame count) / (calibration vehicle frame
 count)) \* speed limit).
-
+```
 Further analysis is performed in VST to home in on the likely actual
 speed but that analysis needn’t be discussed here.
 
@@ -158,7 +154,7 @@ location of the vehicle. The blue line at the leading edge of the green
 rectangle is where the predictive tracker expects the front bumper to
 be. In order to do an
 
-![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig03.jpg)
+![][Fig3]
 
 acceptable job of determining a vehicle’s speed, the VST has to have
 locked the blue line onto the front bumper before the vehicle hits its
@@ -197,7 +193,7 @@ computation of profile area (to separate buses from cars from
 motorcycles) and to handle issues that arise when two opposing vehicles
 pass each other.
 
-![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig04.jpg)
+![][Fig4]
 
 There are two decent technical accomplishments in VST: the quality of
 its predictive tracker (look where the blue lines are in Figure 4) and
@@ -206,7 +202,7 @@ with high probability of success. The difference images for the two
 vehicles in Figure 4 are about to collide. Without predictive tracking,
 all would most likely be lost. Figure 5 shows what happens next.
 
-![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig05.jpg)
+![][Fig5]
 
 As soon as a pair of front bumpers of opposing vehicles passes each
 other, VST turns the leading blue lines red to indicate that each
@@ -232,14 +228,14 @@ reckoning rear bumpers when it determines the predicted positions of the
 rear bumpers are past each other. Notice how tightly the tracker lock
 has stayed on the front bumpers despite the vehicles’ recent passing.
 
-![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig06.jpg)
+![][Fig6]
 
 Finally, as seen in Figure 7, the vehicles have crossed their respective
 second speed measuring zone white lines, VST has computed their
 respective speeds, automated quality checks have been passed, and speeds
 are posted. And so it goes.
 
-![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig07.jpg)
+![][Fig7]
 
 While the VST is executing, the user has various options. When the
 analysis window (e.g. the top window in Fig. 7) is highlighted, the user
@@ -269,10 +265,10 @@ the user says “yes”. Consequently the user is given the chance to enter
 qualifying information for vehicle speeds, and profile area, leading to
 the vehicle’s inclusion in the highlights video file.
 
-![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig08.jpg)
+![][Fig8]
 
-![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig09a.jpg)
-![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig09b.jpg)
+![][Fig9a]
+![][Fig9b]
 
 After answering questions about the highlights video selection data, a
 video compression selection box will pop up, as depicted on the left in
@@ -360,9 +356,9 @@ codec you choose will be used to encode the edited highlights video that
 FHVD outputs. Once you’ve chosen the codec (h264 highly recommended),
 the editing process will begin.
 
-![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig10.jpg)
+![][Fig10]
 
-![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig11.jpg)
+![][Fig11]
 
 FHDV presents the motion of vehicles, one at a time, with the last frame
 displayed being the one showing the vehicle across the end of the speed
@@ -428,8 +424,6 @@ executables running:
 
 -   Execute!
 
-**\
-**
 
 **Set-up Checklist**
 
@@ -538,3 +532,15 @@ the following table. Spaces are allowed on either side of the “=”.
 | R2LStreetY           | y coordinate in the analysis box for describing R2L vehicle hubcap line.  Currently a constant because I have a flat, non-sloping street.  Slopes, bumps and/or dips could be described by changing R2LStreetY to a function of x, where R2LStreetY() describes an arbitrary polynomial you provide.                                                                                                                                                                                                                                                                                                                                                  | 
 | L2RStreetY           | y coordinate in the analysis box for describing L2R vehicle hubcap line.  Currently a constant because I have a flat, non-sloping street.  Slopes, bumps and/or dips could be described by changing L2RStreetY to a function of x, where L2RStreetY() describes an arbitrary polynomial you provide.                                                                                                                                                                                                                                                                                                                                                  | 
 | nextHeight           | The value of this variable assumed before an actual vehicle height estimation can be conducted is a constant in the code.  You probably won't have to change it in your setup, but you might.  Once three or more differencing operation images are produced for a vehicle entering the scene, height will be calculated from data.                                                                                                                                                                                                                                                                                                                   | 
+[Fig1]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig01.jpg
+[Fig2]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig02.jpg
+[Fig3]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig03.jpg
+[Fig4]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig04.jpg
+[Fig5]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig05.jpg
+[Fig6]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig06.jpg
+[Fig7]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig07.jpg
+[Fig8]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig08.jpg
+[Fig9a]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig09a.jpg
+[Fig9b]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig09b.jpg
+[Fig10]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig10.jpg
+[Fig11]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig11.jpg
