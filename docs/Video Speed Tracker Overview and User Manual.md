@@ -533,14 +533,14 @@ the following table. Spaces are allowed on either side of the “=”.
 | L2RStreetY           | y coordinate in the analysis box for describing L2R vehicle hubcap line.  Currently a constant because I have a flat, non-sloping street.  Slopes, bumps and/or dips could be described by changing L2RStreetY to a function of x, where L2RStreetY() describes an arbitrary polynomial you provide.                                                                                                                                                                                                                                                                                                                                                  | 
 | nextHeight           | The value of this variable assumed before an actual vehicle height estimation can be conducted is a constant in the code.  You probably won't have to change it in your setup, but you might.  Once three or more differencing operation images are produced for a vehicle entering the scene, height will be calculated from data.                                                                                                                                                                                                                                                                                                                   | 
 [Fig1]: images/Fig01.jpg
-[Fig2]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig02.jpg
-[Fig3]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig03.jpg
-[Fig4]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig04.jpg
-[Fig5]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig05.jpg
-[Fig6]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig06.jpg
-[Fig7]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig07.jpg
-[Fig8]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig08.jpg
-[Fig9a]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig09a.jpg
-[Fig9b]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig09b.jpg
-[Fig10]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig10.jpg
-[Fig11]: https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig11.jpg
+[Fig2]: images/Fig02.jpg
+[Fig3]: images/Fig03.jpg
+[Fig4]: images/Fig04.jpg
+[Fig5]: images/Fig05.jpg
+[Fig6]: images/Fig06.jpg
+[Fig7]: images/Fig07.jpg
+[Fig8]: images/Fig08.jpg
+[Fig9a]: images/Fig09a.jpg
+[Fig9b]: images/Fig09b.jpg
+[Fig10]: images/Fig10.jpg
+[Fig11]: images/Fig11.jpg
