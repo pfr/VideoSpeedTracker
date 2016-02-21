@@ -1,13 +1,3 @@
-Video Speed Tracker
-
-Paul Reynolds
-
-<reynolds@virginia.edu>
-[www.cs.virginia.edu/\~pfr](http://www.cs.virginia.edu/~pfr)
-<https://github.com/pfr/VideoSpeedTracker>
-
-Feb 2016
-
 **Overview**
 
 The Video Speed Tracker (VST) is an open source, technically sound,
@@ -15,7 +5,7 @@ vehicle speed measuring system that can track bidirectional traffic, one
 lane in each direction (e.g. a typical residential street). Software for
 VST can be found at <https://github.com/pfr/VideoSpeedTracker>. Beyond a
 typical home computer, VST requires video from an HD camera, many of
-which can be purchased for less than \$100 (e.g. the Foscam Fi9103EP,
+which can be purchased for less than $100 (e.g. the Foscam Fi9103EP,
 power over Ethernet, outdoor camera). If you plan to modify and
 recompile VST then you need to have OpenCV c 2.4.11 installed.
 
@@ -80,11 +70,9 @@ Currently, if you answer that the analysis box, etc. are not OK, the
 program aborts (because problems would be fixed by changing values in
 VST.cfg).
 
-![](media/image1.png){width="6.565217629046369in"
-height="4.853772965879265in"}
+![Figure 1.  Command Line Setup](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig01.jpg)
 
-![](media/image2.png){width="6.658412073490814in"
-height="3.921065179352581in"}
+![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig02.jpg)
 
 The yellow-edged analysis box depicted in Figure 2 serves a number of
 purposes: It crops out across the street neighbors’ houses, it removes
@@ -170,7 +158,7 @@ location of the vehicle. The blue line at the leading edge of the green
 rectangle is where the predictive tracker expects the front bumper to
 be. In order to do an
 
-![](media/image3.png){width="7.2113648293963255in" height="2.5625in"}
+![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig03.jpg){width="7.2113648293963255in" height="2.5625in"}
 
 acceptable job of determining a vehicle’s speed, the VST has to have
 locked the blue line onto the front bumper before the vehicle hits its
@@ -209,7 +197,7 @@ computation of profile area (to separate buses from cars from
 motorcycles) and to handle issues that arise when two opposing vehicles
 pass each other.
 
-![](media/image4.png){width="7.208333333333333in"
+![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig04.jpg){width="7.208333333333333in"
 height="2.5568022747156607in"}
 
 There are two decent technical accomplishments in VST: the quality of
@@ -219,7 +207,7 @@ with high probability of success. The difference images for the two
 vehicles in Figure 4 are about to collide. Without predictive tracking,
 all would most likely be lost. Figure 5 shows what happens next.
 
-![](media/image5.png){width="7.199551618547681in"
+![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig05.jpg){width="7.199551618547681in"
 height="2.5729166666666665in"}
 
 As soon as a pair of front bumpers of opposing vehicles passes each
@@ -246,7 +234,7 @@ reckoning rear bumpers when it determines the predicted positions of the
 rear bumpers are past each other. Notice how tightly the tracker lock
 has stayed on the front bumpers despite the vehicles’ recent passing.
 
-![](media/image6.png){width="7.239583333333333in"
+![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig06.jpg){width="7.239583333333333in"
 height="2.609653324584427in"}
 
 Finally, as seen in Figure 7, the vehicles have crossed their respective
@@ -254,7 +242,7 @@ second speed measuring zone white lines, VST has computed their
 respective speeds, automated quality checks have been passed, and speeds
 are posted. And so it goes.
 
-![](media/image7.png){width="7.24622375328084in" height="2.5625in"}
+![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig07.jpg){width="7.24622375328084in" height="2.5625in"}
 
 While the VST is executing, the user has various options. When the
 analysis window (e.g. the top window in Fig. 7) is highlighted, the user
@@ -284,11 +272,11 @@ the user says “yes”. Consequently the user is given the chance to enter
 qualifying information for vehicle speeds, and profile area, leading to
 the vehicle’s inclusion in the highlights video file.
 
-![](media/image8.png){width="6.5in" height="4.304861111111111in"}
+![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig08.jpg){width="6.5in" height="4.304861111111111in"}
 
-![](media/image9.png){width="3.0517016622922135in"
+![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig09a.jpg){width="3.0517016622922135in"
 height="1.7289501312335958in"}
-![](media/image10.png){width="3.062117235345582in"
+![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig09b.jpg){width="3.062117235345582in"
 height="1.7601968503937009in"}
 
 After answering questions about the highlights video selection data, a
@@ -377,9 +365,9 @@ codec you choose will be used to encode the edited highlights video that
 FHVD outputs. Once you’ve chosen the codec (h264 highly recommended),
 the editing process will begin.
 
-![](media/image11.png){width="6.5in" height="3.2743055555555554in"}
+![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig10.jpg){width="6.5in" height="3.2743055555555554in"}
 
-![](media/image12.png){width="6.5in" height="3.807638888888889in"}
+![](https://raw.githubusercontent.com/pfr/VideoSpeedTracker/master/docs/images/Fig11.jpg){width="6.5in" height="3.807638888888889in"}
 
 FHDV presents the motion of vehicles, one at a time, with the last frame
 displayed being the one showing the vehicle across the end of the speed
