@@ -470,17 +470,17 @@ executables running:
 6.  Create a location (the “prefixPath”) for five directories used by
     VST (and the final highlights video processor):
 
-    a.  IPCam – You put directories for (typically) daily collections
+    1.  IPCam – You put directories for (typically) daily collections
         of .avi video files here.
 
-    b.  HiLites – VST outputs highlights videos into this directory
+    2.  HiLites – VST outputs highlights videos into this directory
 
-        i.  forPosting – Subdirectory for output of final highlights
+        1.  forPosting – Subdirectory for output of final highlights
             video processor
 
-    c.  Stats – VST puts csv files with tracked vehicle data here
+    3.  Stats – VST puts csv files with tracked vehicle data here
 
-    d.  Trace – VST puts debug files here.
+    4.  Trace – VST puts debug files here.
 
 All of the files VST creates are given names derived from the input
 video file name (or the video file directory if you answer “\*” when
