@@ -3,8 +3,7 @@ The Video Speed Tracker (VST) is an open source, technically sound, vehicle spee
 that can track bidirectional traffic, one lane in each direction (e.g. a typical residential street). 
 Beyond a typical home computer, VST requires video from an HD camera, many of which can be purchased
 for less than $100 (e.g. the Foscam Fi9103EP, power over Ethernet, outdoor camera.  If you buy a POE camera,
-be sure to buy something like the TP-LINK TL-PoE150S - about $18 - to power it.). You need to have
-OpenCV 2.4.11 installed.
+be sure to buy something like the TP-LINK TL-PoE150S - about $18 - to power it.).
 
 Win7telx64 executables have been added on 15 Feb 2016.  See the section named "Installing executables" in the
 User Manual.
@@ -38,8 +37,8 @@ the scene. Setting up as you see in Figure 2 of the included overview
 (in Docs/Overview and User Manual_v3.pdf) helps the tracker produce high quality results.
 
 4. If you’re recompiling, you’ll need OpenCV 2.4.11 installed to have a successful compile. If
-you’re executing a provided executable you’ll still need OpenCV 2.4.11 x64/vc11 runtime libraries (dll’s in
-Windows) before you can execute successfully.
+you’re executing a provided executable the required OpenCV 2.4.11 x64/vc11 runtime libraries (dll’s in
+Windows) are provided in /bin.
 
 5. Set critical one time setup values in VST.cfg. These values are described in the appendix of the included pdf under docs.
 
