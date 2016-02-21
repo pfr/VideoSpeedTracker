@@ -427,7 +427,7 @@ executables running:
 
 **Set-up Checklist**
 
-1)  You really want 100 feet or more of open view (a maple tree trunk in
+1.  You really want 100 feet or more of open view (a maple tree trunk in
     the foreground is OK) of the street. Your speed measuring zone
     should be at least one second wide for a vehicle going the
     speed limit. For a speed limit of 25 MPH, that’s about 37 feet. My
@@ -436,7 +436,7 @@ executables running:
     vehicles up to 71 MPH (Blue line on the front bumper the whole way!)
     in the zone you see in Figure 2.
 
-2)  You need an HD (1280 x 720) video input stream for the stretch of
+2.  You need an HD (1280 x 720) video input stream for the stretch of
     street you want to analyze. That requires a camera. I’m using the
     Foscam FI9803EP outdoor, HD, power over ethernet camera. It’s about
     \$90 online. I have no particular loyalty to Foscam, but I can say
@@ -447,7 +447,7 @@ executables running:
     including through the infamous Middle Atlantic January
     2016 Snowzilla.
 
-3)  Aim the camera well. Look at Figure 2. Aim the camera so that the
+3.  Aim the camera well. Look at Figure 2. Aim the camera so that the
     street passes left to right about half way up the overall image.
     This should minimize the effects of lens distortion. A vehicle
     moving a constant velocity cross the lens moves at different pixel
@@ -459,23 +459,23 @@ executables running:
     up as you see in Figure 2 helps the tracker produce high
     quality results.
 
-4)  If you’re recompiling, you’ll need OpenCV 2.4.11 installed to have a
+4.  If you’re recompiling, you’ll need OpenCV 2.4.11 installed to have a
     successful compile. If you’re executing a provided executable you’ll
     still need OpenCV 2.4.11 runtime libraries (dll’s in Windows) before
     you can execute successfully.
 
-5)  Set critical one time setup values in VST.cfg. These values are
+5.  Set critical one time setup values in VST.cfg. These values are
     described in the appendix.
 
-6)  Create a location (the “prefixPath”) for five directories used by
+6.  Create a location (the “prefixPath”) for five directories used by
     VST (and the final highlights video processor):
 
-    a.  IPCam -- You put directories for (typically) daily collections
+    a.  IPCam – You put directories for (typically) daily collections
         of .avi video files here.
 
-    b.  HiLites -- VST outputs highlights videos into this directory
+    b.  HiLites – VST outputs highlights videos into this directory
 
-        i.  forPosting -- Subdirectory for output of final highlights
+        i.  forPosting – Subdirectory for output of final highlights
             video processor
 
     c.  Stats – VST puts csv files with tracked vehicle data here
