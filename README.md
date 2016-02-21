@@ -62,7 +62,7 @@ the IPCam directory, I create subdirectories with syntax yyyymmdd (e.g. 20160205
 that day’s video files.
 
 A much more detailed version of this readme is available
-[here.](docs/Video Speed Tracker Overview and User Manual.md)
+[**here.**](docs/Video Speed Tracker Overview and User Manual.md)
 
 ## Original Author and Development Lead
 - Paul Reynolds (reynolds@virginia.edu) www.cs.virginia.edu/~pfr
