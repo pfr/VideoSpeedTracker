@@ -1,4 +1,4 @@
-**Overview**
+##Overview##
 
 The Video Speed Tracker (VST) is an open source, technically sound,
 vehicle speed measuring system that can track bidirectional traffic, one
@@ -38,7 +38,7 @@ passing traffic. VST outputs:
 
 The final highlights video processor takes in a highlights video produced by VST and produces a final video file meant to depict carefully reviewed speeding vehicles.  The highlights video processor supports user viewing of each vehicle as it passes through the speed measuring zone, replay, slow replay, deletion and keeping for the final highlights video.  The final highlights video should be the sort of thing your lawyer would be comfortable with you posting to the internet.
 
-**Using VST**
+##Using VST##
 
 When you’ve got OpenCV dll’s installed on your system, your camera with
 a street view set up, values for your particular scenario set in VST.cfg
@@ -63,11 +63,11 @@ Currently, if you answer that the analysis box, etc. are not OK, the
 program aborts (because problems would be fixed by changing values in
 VST.cfg).
 
-![Figure 1.  Command Line Setup][Fig1]
+![Command Line Setup][Fig1]
 
-**Figure 1.**  Command Line Setup
+**Figure 1.**  Command Line Setup.
 
-![Figure 2.  Yellow Analysis Box and Other Markings.][Fig2]
+![Yellow Analysis Box and Other Markings][Fig2]
 
 **Figure 2.**  Yellow Analysis Box and Other Markings.
 
@@ -154,7 +154,9 @@ location of the vehicle. The blue line at the leading edge of the green
 rectangle is where the predictive tracker expects the front bumper to
 be. In order to do an
 
-![][Fig3]
+![VST in Operation][Fig3]
+
+**Figure 3.**  VST in Operation.
 
 acceptable job of determining a vehicle’s speed, the VST has to have
 locked the blue line onto the front bumper before the vehicle hits its
@@ -193,7 +195,9 @@ computation of profile area (to separate buses from cars from
 motorcycles) and to handle issues that arise when two opposing vehicles
 pass each other.
 
-![][Fig4]
+![Opposing cars in the speed measuring zone][Fig4]
+
+**Figure 4.**  Opposing cars in the speed measuring zone.
 
 There are two decent technical accomplishments in VST: the quality of
 its predictive tracker (look where the blue lines are in Figure 4) and
@@ -202,7 +206,9 @@ with high probability of success. The difference images for the two
 vehicles in Figure 4 are about to collide. Without predictive tracking,
 all would most likely be lost. Figure 5 shows what happens next.
 
-![][Fig5]
+![Dead Reckoning Front Bumpers of Opposing Direction Passing Vehicles][Fig5]
+
+**Figure 5.**  Dead Reckoning Front Bumpers of Opposing Direction Passing Vehicles.
 
 As soon as a pair of front bumpers of opposing vehicles passes each
 other, VST turns the leading blue lines red to indicate that each
@@ -228,14 +234,18 @@ reckoning rear bumpers when it determines the predicted positions of the
 rear bumpers are past each other. Notice how tightly the tracker lock
 has stayed on the front bumpers despite the vehicles’ recent passing.
 
-![][Fig6]
+![Dead Reckoning Rear Bumpers][Fig6]
+
+**Figure 6.** Dead Reckoning Rear Bumpers.
 
 Finally, as seen in Figure 7, the vehicles have crossed their respective
 second speed measuring zone white lines, VST has computed their
 respective speeds, automated quality checks have been passed, and speeds
 are posted. And so it goes.
 
-![][Fig7]
+![Speeds Determined for Both Vehicles][Fig7]
+
+**Figure 7.** Speeds Determined for Both Vehicles.
 
 While the VST is executing, the user has various options. When the
 analysis window (e.g. the top window in Fig. 7) is highlighted, the user
@@ -256,7 +266,7 @@ behavior:
     times slower up to a delay upper limit of 1250. Consequently the
     execution speed of VST goes down accordingly.
 
-**Producing a Highlights Video File in VST**
+##Producing a Highlights Video File in VST##
 
 You’re given an option to have a highlights video file produced as a
 byproduct of the execution of VST. In Fig. 1 the user said “no” to such
@@ -265,10 +275,15 @@ the user says “yes”. Consequently the user is given the chance to enter
 qualifying information for vehicle speeds, and profile area, leading to
 the vehicle’s inclusion in the highlights video file.
 
-![][Fig8]
+![Requesting Highlights Video File in VST][Fig8]
 
-![][Fig9a]
-![][Fig9b]
+**Figure 8.** Requesting Highlights Video File in VST.
+
+
+![CODEC Selection][Fig9a]
+![CODEC Selection][Fig9b]
+
+**Figure 9.** CODEC Selection.
 
 After answering questions about the highlights video selection data, a
 video compression selection box will pop up, as depicted on the left in
@@ -281,7 +296,7 @@ start up, and you will see the two new windows depicted in Figure 3.
 Sorry about the pop-up box. OpenCV 2.4.11 has a small bug that prevents
 specification of an h264 codec in the open file operation.
 
-**Further Notes on the VST**
+##Further Notes on the VST##
 
 Every once in a while a horizontal red line will pop up through the
 middle of the Analysis Box. This means that VST has determined there’s
@@ -335,7 +350,7 @@ for a vehicle in the upper corner of its destination end of the analysis
 box, then that speed is recorded into the spreadsheet (csv) data file.
 Posted speeds can be seen in the top window of Fig. 7.
 
-**Post-Processing with the Final Highlights Video Processor**
+##Post-Processing with the Final Highlights Video Processor##
 
 Input to the second program, the final highlights video processor
 (FHVD), is a video highlights file produced by VST. The purpose of the
@@ -356,9 +371,14 @@ codec you choose will be used to encode the edited highlights video that
 FHVD outputs. Once you’ve chosen the codec (h264 highly recommended),
 the editing process will begin.
 
-![][Fig10]
+![FHVD Input File Selection][Fig10]
 
-![][Fig11]
+**Figure 10.** FHVD Input File Selection.
+
+
+![Cropping Box for FHVD Output][Fig11]
+
+**Figure 11.** Cropping Box for FHVD Output.
 
 FHDV presents the motion of vehicles, one at a time, with the last frame
 displayed being the one showing the vehicle across the end of the speed
@@ -382,7 +402,7 @@ FHVD’s output file has the prefix “forPost” and a suffix taken from the
 original video file processed by VST. The forPost file is written to the
 subdirectory &lt;path prefix&gt;\\HiLites\\forPosting.
 
-**Current Development Environment and Implementation**
+##Current Development Environment and Implementation##
 
 Both VST and FHVD have been developed in M.S. Visual Studio 2013, C++,
 using the OpenCV C++ API on a Win7, 64 bit platform. I have made every
@@ -398,7 +418,7 @@ relatively new 3.x version and ran into too many bugs. Your mileage may
 vary. Once I got the installation right, OpenCV 2.4.11 has worked
 without noticeable bugs (except the codec pop-up issue noted above).
 
-**Installing Executables**
+##Installing Executables##
 
 Executables that can run on Win7tel64 platforms can be found in the repo
 bin directory. You’ll find two executables and two config files that
@@ -425,7 +445,7 @@ executables running:
 -   Execute!
 
 
-**Set-up Checklist**
+##Set-up Checklist##
 
 1.  You really want 100 feet or more of open view (a maple tree trunk in
     the foreground is OK) of the street. Your speed measuring zone
@@ -439,7 +459,7 @@ executables running:
 2.  You need an HD (1280 x 720) video input stream for the stretch of
     street you want to analyze. That requires a camera. I’m using the
     Foscam FI9803EP outdoor, HD, power over ethernet camera. It’s about
-    \$90 online. I have no particular loyalty to Foscam, but I can say
+    $90 online. I have no particular loyalty to Foscam, but I can say
     I’ve had about a half dozen of their cameras and only one
     (an FI9821) has developed an issue (when it pans, the video signal
     cuts out). That’s a decent record for an inexpensive cam that does
@@ -488,9 +508,9 @@ asked for which file in a directory full of video files to process.) For
 the IPCam directory, I create subdirectories with syntax yyyymmdd (e.g.
 20160205) in which I place that day’s video files.
 
-**Appendix**
+##Appendix##
 
-Objects used in VST that need to be set in VST.cfg
+###Objects used in VST that need to be set in VST.cfg###
 
 VST.cfg has been created to maximize the chances of being able to
 distribute an executable (i.e. not requiring a recompile). VST.cfg
