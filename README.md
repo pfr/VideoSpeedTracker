@@ -38,7 +38,7 @@ the scene. Setting up as you see in Figure 2 of the included overview
 
 4. If you’re recompiling, you’ll need OpenCV 2.4.11 installed to have a successful compile. If
 you’re executing a provided executable the required OpenCV 2.4.11 x64/vc11 runtime libraries (dll’s in
-Windows) are provided.
+Windows) are provided in /bin.
 
 5. Set critical one time setup values in VST.cfg. These values are described in the appendix of the included pdf under docs.
 
