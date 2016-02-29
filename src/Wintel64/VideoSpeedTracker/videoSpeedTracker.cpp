@@ -395,13 +395,14 @@ void displayAnalysisGoingRight(int inFrameNum, int index, Rect rectangle, Overla
 		cv::line(AnalysisFrame, Point(x + wd, y), Point(x + wd, y + ht), Scalar(CVRed), 2);
 	else
 		cv::line(AnalysisFrame, Point(x + wd, y), Point(x + wd, y + ht), Scalar(CVBlue), 2);
-	if (estSpeed > 0)  
-		if (estSpeed <= speedLimit)  
+	if (estSpeed > 0) {
+		if (estSpeed <= speedLimit)
 			putText(AnalysisFrame, intToString(estSpeed) + " MPH", Point(g.pixelRight-180, 30), 2, 1, Scalar(CVGreen), 2);
 		else if (estSpeed < egregiousSpeedLowerBound) 
 			putText(AnalysisFrame, intToString(estSpeed) + " MPH", Point(g.pixelRight-180, 30), 2, 1, Scalar(CVYellow), 2);
-		else                         
+		else
 			putText(AnalysisFrame, intToString(estSpeed) + " MPH", Point(g.pixelRight-180, 30), 2, 1, Scalar(CVRed), 2);
+	}
 	if (highLightsPlease){
 		if (vehiclesGoingRight[index].getTrackStartPixel() == 0)
 			vehiclesGoingRight[index].holdFrame(AnalysisFrame); // if vehicle hasnt passed start post yet, keep last frame in case about to cross into speed zone.
@@ -437,13 +438,14 @@ void displayAnalysisGoingLeft(int inFrameNum, int index, Rect rectangle, Overlap
 		cv::line(AnalysisFrame, Point(x + wd, y), Point(x + wd, y + ht), Scalar(CVRed), 2);
 	else
 		cv::line(AnalysisFrame, Point(x + wd, y), Point(x + wd, y + ht), Scalar(CVGreen), 2);
-	if (estSpeed > 0)
+	if (estSpeed > 0) {
 		if(estSpeed <= speedLimit) 
 			putText(AnalysisFrame, intToString(estSpeed) + " MPH", Point(g.pixelLeft, 30), 2, 1, Scalar(CVGreen), 2);
 		else if (estSpeed < egregiousSpeedLowerBound)
 			putText(AnalysisFrame, intToString(estSpeed) + " MPH", Point(g.pixelLeft, 30), 2, 1, Scalar(CVYellow), 2);
 		else 
 			putText(AnalysisFrame, intToString(estSpeed) + " MPH", Point(g.pixelLeft, 30), 2, 1, Scalar(CVRed), 2);
+	}
 	if (highLightsPlease){
 		if (vehiclesGoingLeft[index].getTrackStartPixel() == 0) 
 			vehiclesGoingLeft[index].holdFrame(AnalysisFrame); // if vehicle hasnt passed start post yet, keep last frame in case about to cross into speed zone.
@@ -953,7 +955,7 @@ bool manageMovers(Mat wholeScenethreshImage, Mat &AnalysisFrame){
 
 		if (projectedL2R.size() > 0){ // All bidirectional cases considered by the time control gets here.
 			for (int index = 0; index < projectedL2R.size(); index++){
-            // First, focus the search for detected blobs to the region the vehicle is projected to occupy
+				// First, focus the search for detected blobs to the region the vehicle is projected to occupy
 				//find external contours of filtered image using openCV findContours function
 				contours.erase(contours.begin(), contours.end()); // Clear contours vector
 				hierarchy.erase(hierarchy.begin(), hierarchy.end());  // Clear hierarchy vector

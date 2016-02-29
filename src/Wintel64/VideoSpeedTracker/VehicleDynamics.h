@@ -124,8 +124,6 @@ private:
 
 	OverlapType overlapStatus = none;  //Initially assume vehicle overlaps no others;
 
-	double LPFilterCoeff = 0.80;  // For filtering approximations of vehicle length (width)
-
 // for stats
 
 	int entryPixelIndex;
