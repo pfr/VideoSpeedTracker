@@ -208,9 +208,9 @@ void setup(){
 	cv::line(frame, Point(g.AnalysisBoxLeft + 10, g.AnalysisBoxTop + g.R2LStreetY), Point(g.AnalysisBoxLeft + g.AnalysisBoxWidth - 20, g.AnalysisBoxTop + g.R2LStreetY), Scalar(CVOrange), 2);
 	cv::line(frame, Point(g.AnalysisBoxLeft + 10, g.AnalysisBoxTop + g.L2RStreetY), Point(g.AnalysisBoxLeft + g.AnalysisBoxWidth - 20, g.AnalysisBoxTop + g.L2RStreetY), Scalar(CVPurple), 2);
 
-	switch (waitKey(20)){};
+	waitKey(20);
 	cv::imshow("Full Frame", frame);
-	switch (waitKey(20)){};
+	waitKey(20);
 
 	cout << endl << "Are Analysis Box, Speed Measuring Zone, " << endl << "    Obstruction Framing, and Hubcap Lines OK (y|n) [y] ?  ";
 	std::string yesNo;
