@@ -106,6 +106,10 @@ int main(){
 			cout << "Unexpected error in config file.  Spinning for ctrl-c." << endl;
 			while (1){ sleep(1); }
 		}
+		while (inLine.back() == '\r')
+			inLine.pop_back();
+		if (inLine.empty())
+			continue;   // blank line
 		if (getSides(inLine)){
 			lhs = trim(lhs);
 			rhs = trim(rhs);
