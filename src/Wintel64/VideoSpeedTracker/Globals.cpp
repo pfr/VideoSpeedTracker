@@ -103,12 +103,15 @@ bool Globals::readConfig(){
 
 	int place, place2;
 	int lineNo = 0;
-	while (!configIn.eof()){
-		getline(configIn, inLine);
+	while (getline(configIn, inLine)) {
 		if (!configIn){
 			cout << "Unexpected error in config file." << endl;
 			return false;
 		}
+		while (inLine.back() == '\r')
+			inLine.pop_back();
+		if (inLine.empty())
+			continue;   // blank line
 		if (getSides(inLine)){
 			lhs = trim(lhs);
 			rhs = trim(rhs);
