@@ -209,6 +209,10 @@ void setup(){
 	cv::line(frame, Point(g.AnalysisBoxLeft + 10, g.AnalysisBoxTop + g.L2RStreetY), Point(g.AnalysisBoxLeft + g.AnalysisBoxWidth - 20, g.AnalysisBoxTop + g.L2RStreetY), Scalar(CVPurple), 2);
 
 	waitKey(20);
+	if (frame.empty()) {
+		cerr << "Video frame is empty" << endl;
+		exit(EXIT_FAILURE);
+	}
 	cv::imshow("Full Frame", frame);
 	waitKey(20);
 
