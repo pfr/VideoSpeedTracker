@@ -1,4 +1,4 @@
-CXXFLAGS  = -Wall -Werror
+CXXFLAGS  = -Wall -Werror -g
 
 ifeq ($(shell uname),Darwin)
 # Go get opencv3:
