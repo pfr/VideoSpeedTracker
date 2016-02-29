@@ -98,13 +98,13 @@ int main(){
 	ifstream configIn("ProcessHiLites.cfg");
 	if (!configIn.good()){
 		cout << "Can't open ProcessHiLites.cfg.  Spinning for ctrl-c." << endl;
-		while (1) { sleep(1); }
+		while (1) { getchar(); }
 	}
 	int lineNo = 0;
 	while (getline(configIn, inLine)) {
 		if (!configIn){
 			cout << "Unexpected error in config file.  Spinning for ctrl-c." << endl;
-			while (1){ sleep(1); }
+			while (1){ getchar(); }
 		}
 		while (inLine.back() == '\r')
 			inLine.pop_back();
@@ -115,7 +115,7 @@ int main(){
 			rhs = trim(rhs);
 			if (lhs != lhsString[lineNo]){
 				cout << "Just read LHS doesn't match anything: <" << lhs << ">.  Spinning for ctrl-c." << endl;
-				while (1){ sleep(1); }
+				while (1){ getchar(); }
 			}
 			switch (lineNo){
 			case 0:
@@ -133,7 +133,7 @@ int main(){
 			default:
 				if (lineNo > 2){
 					cout << "Too many lines in config file.  Spinning for ctrl-c." << endl;
-					while (1){ sleep(1); }
+					while (1){ getchar(); }
 				}
 			} // switch
 			lineNo++;
@@ -141,7 +141,7 @@ int main(){
 		else{
 			cout << "getSides() failed in config reader.  Check VST.cfg syntax.   Spinning for ctrl-c. " << endl;
 			configIn.close();
-			while (1){ sleep(1); }
+			while (1){ getchar(); }
 		}
 
 	} // while not eof in config file
