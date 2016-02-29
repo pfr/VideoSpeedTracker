@@ -143,12 +143,23 @@ void setup(){
 	string yesNo = "n";
 	while (yesNo == "n"){
 		directoryList.open(camPath + "directories.txt");
+		if (!directoryList) {
+			perror("directories.txt");
+			exit(EXIT_FAILURE);
+		}
+
+		bool foundAnyDirectories = false;
 		while (getline(directoryList, dirName)){
+			foundAnyDirectories = true;
 			cout << "Want the directory " << dirName.substr(0, 4) + " " + dirName.substr(4, 2) + " " + dirName.substr(6, 2) << "  (y/n) [n]: ";
 			getline(cin, yesNo);
 			if (yesNo == "y") break;
 		}
 		directoryList.close();
+		if (!foundAnyDirectories) {
+			fprintf(stderr, "Did not find any candidate directories (directories.txt is empty).");
+			exit(EXIT_FAILURE);
+		}
 	}
 
 // Go through the file names in the selected directory for the user.
