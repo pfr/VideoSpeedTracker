@@ -53,9 +53,9 @@
 //*****************************************************************************************************************************
 
 
-#include <opencv\cv.h>
-#include "opencv2\highgui\highgui.hpp"
-#include "Globals.h""
+#include <opencv/cv.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include "Globals.h"
 #include <iostream>
 #include <fstream>
 #include <queue>
