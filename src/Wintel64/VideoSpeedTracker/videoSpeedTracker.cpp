@@ -678,7 +678,7 @@ bool manageMovers(Mat wholeScenethreshImage, Mat &AnalysisFrame, const string &d
 /// < < < < < < < < < < < < < < < < < < < < < < < < < < G e t   P r o j e c t i o n s   f o r   v e h s   a l r e a d y   i n   t r a c k  > > > > > > > > > > > > > > > > 
 // Get all L2R vehicle projections
 	vector<Projection> projectedL2R;  // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	for (int index = 0; index < vehiclesGoingRight.size(); index++){
+	for (size_t index = 0; index < vehiclesGoingRight.size(); index++){
 		projectedL2R.push_back(vehiclesGoingRight[index].getBestProjection(g, frameNumber));
 		if (pleaseTrace) traceFile << endl << "<" << frameNumber << "> Project >>L2R>> vehicle[" << index << "]  Rect xywh: [" << projectedL2R[index].getBox().x << ", "
 			<< projectedL2R[index].getBox().y << ", " << projectedL2R[index].getBox().width << ",  " << projectedL2R[index].getBox().height
@@ -695,7 +695,7 @@ bool manageMovers(Mat wholeScenethreshImage, Mat &AnalysisFrame, const string &d
 
 // Get all R2L vehicle projections
 	vector<Projection> projectedR2L;  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-	for (int index = 0; index < vehiclesGoingLeft.size(); index++){
+	for (size_t index = 0; index < vehiclesGoingLeft.size(); index++){
 		projectedR2L.push_back(vehiclesGoingLeft[index].getBestProjection(g, frameNumber));
 		if (pleaseTrace) traceFile << endl << "<" << frameNumber << "> Project <<R2L<< vehicle[" << index << "]  Rect xywh: [" << projectedR2L[index].getBox().x << ", "
 			<< projectedR2L[index].getBox().y << ", " << projectedR2L[index].getBox().width << ",  " << projectedR2L[index].getBox().height
@@ -951,16 +951,16 @@ bool manageMovers(Mat wholeScenethreshImage, Mat &AnalysisFrame, const string &d
 
 		else {  // Ok, scene is one that can be handled. Clear past info about passing vehicles, and then check for passing vehicles now.
 			if(vehiclesGoingRight.size() > 0)
-				for (int i = 0; i < vehiclesGoingRight.size(); i++) 
+				for (size_t i = 0; i < vehiclesGoingRight.size(); i++) 
 					vehiclesGoingRight[i].setOverlapStatus(none); // Reset any past L2R overlap determinations.
 			if (vehiclesGoingLeft.size() > 0)
-				for (int i = 0; i < vehiclesGoingLeft.size(); i++)
+				for (size_t i = 0; i < vehiclesGoingLeft.size(); i++)
 					vehiclesGoingLeft[i].setOverlapStatus(none); // Reset any past R2L overlap determinations.
 // -------------- Two or three vehicles in analysis zone, a least one in each direction......
 			if ((projectedL2R.size() * projectedR2L.size()) >= 1) { // Two vehs currently in track (ignoring just entered vehicles now), one in each direction;
-				for (int i = 0; i < projectedL2R.size(); i++)
+				for (size_t i = 0; i < projectedL2R.size(); i++)
 					vehiclesGoingRight[i].setOverlapStatus(doesL2ROverlapAnyR2L(i, projectedL2R, projectedR2L, projectedR2L.size()));
-				for (int i = 0; i < projectedR2L.size(); i++)
+				for (size_t i = 0; i < projectedR2L.size(); i++)
 					vehiclesGoingLeft[i].setOverlapStatus(doesR2LOverlapAnyL2R(i, projectedR2L, projectedL2R, projectedL2R.size()));
 			}
 
@@ -973,7 +973,7 @@ bool manageMovers(Mat wholeScenethreshImage, Mat &AnalysisFrame, const string &d
 		Rect objectBoundingRectangle[MAX_NUM_OBJECTS]; // bounding rectangles, formed in a direction sensitive manner
 
 		if (projectedL2R.size() > 0){ // All bidirectional cases considered by the time control gets here.
-			for (int index = 0; index < projectedL2R.size(); index++){
+			for (size_t index = 0; index < projectedL2R.size(); index++){
 				// First, focus the search for detected blobs to the region the vehicle is projected to occupy
 				//find external contours of filtered image using openCV findContours function
 				contours.erase(contours.begin(), contours.end()); // Clear contours vector
@@ -1042,7 +1042,7 @@ bool manageMovers(Mat wholeScenethreshImage, Mat &AnalysisFrame, const string &d
 
 
 		if (0 < projectedR2L.size()) { 
-			for (int index = 0; index < projectedR2L.size(); index++){
+			for (size_t index = 0; index < projectedR2L.size(); index++){
 				// First, focus the search for detected blobs to the region the vehicle is projectyed to occupy
 				//find external contours of filtered image using openCV findContours function
 				contours.erase(contours.begin(), contours.end()); // Clear contours vector

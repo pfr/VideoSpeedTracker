@@ -122,7 +122,7 @@ Mat VehicleDynamics::getHeldFrame(){
 }
 
 Mat VehicleDynamics::getSavedFrame(int index){
-	if (hiLiteFeeds.size() > index)
+	if ((int)hiLiteFeeds.size() > index)
 		return hiLiteFeeds[index];
 	else return Mat();
 }
