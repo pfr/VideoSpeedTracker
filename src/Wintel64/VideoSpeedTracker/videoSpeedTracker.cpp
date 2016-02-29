@@ -63,9 +63,8 @@
 #include "Projection.h"
 #include "Snapshot.h"
 #include <sys/dir.h>
-#include "portability.h"
-
-
+#include "../common/dirlist.h"
+#include "../common/portability.h"
 
 using namespace std;
 using namespace cv;
@@ -112,23 +111,6 @@ string intToString(int number){
 	std::stringstream ss;
 	ss << number;
 	return ss.str();
-}
-
-static vector<string> dir_to_list(const std::string &dirname) {
-	vector<string> ret;
-	DIR *dp = opendir(dirname.c_str());
-	if (!dp) {
-		perror(dirname.c_str());
-		exit(EXIT_FAILURE);
-	}
-	struct dirent *de;
-	while ((de = readdir(dp))) {
-		if (de->d_name[0] != '.') {
-			ret.push_back(de->d_name);
-		}
-	}
-	closedir(dp);
-	return ret;
 }
 
 static string get_date_and_time(const string &filename, const string &sep) {
