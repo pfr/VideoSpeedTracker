@@ -53,18 +53,17 @@
 //*****************************************************************************************************************************
 
 
-#include <opencv/cv.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include "Globals.h"
+#include <opencv\cv.h>
+#include "opencv2\highgui\highgui.hpp"
+#include "Globals.h""
 #include <iostream>
 #include <fstream>
 #include <queue>
 #include "VehicleDynamics.h"
 #include "Projection.h"
 #include "Snapshot.h"
-#include <sys/dir.h>
-#include "../common/dirlist.h"
-#include "../common/portability.h"
+
+
 
 using namespace std;
 using namespace cv;
@@ -84,8 +83,12 @@ bool bailing = false;
 // ........................................................ Globals shared between setup() and main() ................................................
 ofstream traceFile;
 ofstream statsFile;
-vector<string> files;  // video files to process
+ifstream directoryList;
+ifstream filesList;
 VideoCapture capture;  //video capture object.
+bool moreFilesToDo = true;  //  Used to control file processing loop in main.
+string yesNoAll = "n";  // Indicates whetehr one file (Y) or multiple (*) are to be processed.
+string fileName;  // Name of avi file currently being processed.
 string dirPath; // path to fileName
 string fileMid; // The date part of the file name placed there by the Foscam camera
 int objDelay = 1250;  // delay to be used when objects are detected in ROI;  Can be changed through use of "f" and "s" keys while running
@@ -113,11 +116,6 @@ string intToString(int number){
 	return ss.str();
 }
 
-static string get_date_and_time(const string &filename, const string &sep) {
-	string mid = filename.substr(7, 14);  // get the YYYYmmddHHMMSS out of the filename
-	return mid.substr(0, 8) + sep + mid.substr(8, 6);  // separate date from time
-}
-
 // Interact with the user via command line to gather setup information.
 // Also, call readconfig() to read in (from file VST.cfg) and assign configuration data.
 void setup(){
@@ -132,64 +130,46 @@ void setup(){
 	AnalysisBox = Rect(g.AnalysisBoxLeft, g.AnalysisBoxTop, g.AnalysisBoxWidth, g.AnalysisBoxHeight);  // For use when performing speed analysis in cropped region
 
 	Mat frame;
-	string camPath = g.dataPathPrefix + DIR_SEP + "IPCam" + DIR_SEP;
+	string dirName;
+	string camPath = g.dataPathPrefix + "\\IPCam\\";
 
 	cout << endl << endl;
 
 // Get directory containing file(s) to be processed
-	vector<string> directories = dir_to_list(camPath);
-
-	if (directories.empty()) {
-		cerr << "Did not find any candidate directories in " << camPath << endl;
-		exit(EXIT_FAILURE);
-	}
-
-	for (size_t i=0; i<directories.size(); i++) {
-		printf("%2zd: %s\n", i, directories[i].c_str());
-	}
-	string dirName;
-	while (dirName.empty()) {
-		if (cin.eof()) exit(EXIT_FAILURE);
-		cout << "Enter the number for the directory to use: " << flush;
-		string buf;
-		getline(cin, buf);
-		char *endptr;
-		size_t idx = strtoul(buf.c_str(), &endptr, 10);
-		if (!buf.empty() && !*endptr && idx < directories.size()) {
-			dirName = directories[idx];
+	string toSysString = "dir " + camPath + " /b > " + camPath + "directories.txt";
+	const char * toSysStringC = toSysString.c_str();
+//	system("dir g:\\LocustData\\IPCam /b > g:\\LocustData\\IPCam\\directories.txt");
+	system(toSysStringC);
+	string yesNo = "n";
+	while (yesNo == "n"){
+		directoryList.open(camPath + "directories.txt");
+		while (getline(directoryList, dirName)){
+			cout << "Want the directory " << dirName.substr(0, 4) + " " + dirName.substr(4, 2) + " " + dirName.substr(6, 2) << "  (y/n) [n]: ";
+			getline(cin, yesNo);
+			if (yesNo == "y") break;
 		}
+		directoryList.close();
 	}
-	dirPath = camPath + dirName;
 
 // Go through the file names in the selected directory for the user.
-	files = dir_to_list(dirPath);
-	if (files.empty()) {
-		cerr << "Did not find any candidate files in " << dirPath << endl;
-		exit(EXIT_FAILURE);
-	}
+	dirPath = camPath + dirName;
+	string sysString = "dir " + dirPath + "\\*.avi /b > " + dirPath + "\\files.txt";
+	const char * c = sysString.c_str();
+	system(c); // copy the file names from the chosen directory to file "files.txt" in the same directory.
 
-	for (size_t i=0; i<files.size(); i++) {
-		printf("%2zd: %s\n", i, files[i].c_str());
+	// Get file user wants
+	while (yesNoAll == "n"){
+		filesList.open(dirPath + "\\files.txt");
+		while (getline(filesList, fileName)){
+			cout << "Want the file " << fileName.substr(0, 15) + "_" + fileName.substr(15, 10) << "  (y/n/*) [n]: ";
+			getline(cin, yesNoAll);
+			if (yesNoAll == "y" || yesNoAll == "*") break;  // User has chosen one file, or all in directory
+		}
+		filesList.close();
 	}
-
-	while (true) {
-		if (cin.eof()) exit(EXIT_FAILURE);
-		cout << "Enter the number for the file to use, or * for all: " << flush;
-		string buf;
-		getline(cin, buf);
-		if (buf == "*") break;
-		char *endptr;
-		size_t idx = strtoul(buf.c_str(), &endptr, 10);
-		if (buf.empty() || *endptr || idx >= files.size()) continue;  // bad input -> try again
-		vector<string> onefile;
-		onefile.push_back(files[idx]);
-		files.swap(onefile);
-		break;
-	}
-	assert(!files.empty());
 
 	// Do a one-time setup of region of interest, obstructions and speed posts
-	string FullName = dirPath + DIR_SEP + files.back();
+	string FullName = dirPath + "\\" + fileName;
 	capture.open(FullName);
 	if (!capture.isOpened()){
 		cout << "ERROR ACQUIRING VIDEO FEED\n";
@@ -208,16 +188,11 @@ void setup(){
 	cv::line(frame, Point(g.AnalysisBoxLeft + 10, g.AnalysisBoxTop + g.R2LStreetY), Point(g.AnalysisBoxLeft + g.AnalysisBoxWidth - 20, g.AnalysisBoxTop + g.R2LStreetY), Scalar(CVOrange), 2);
 	cv::line(frame, Point(g.AnalysisBoxLeft + 10, g.AnalysisBoxTop + g.L2RStreetY), Point(g.AnalysisBoxLeft + g.AnalysisBoxWidth - 20, g.AnalysisBoxTop + g.L2RStreetY), Scalar(CVPurple), 2);
 
-	waitKey(20);
-	if (frame.empty()) {
-		cerr << "Video frame is empty" << endl;
-		exit(EXIT_FAILURE);
-	}
+	switch (waitKey(20)){};
 	cv::imshow("Full Frame", frame);
-	waitKey(20);
+	switch (waitKey(20)){};
 
 	cout << endl << "Are Analysis Box, Speed Measuring Zone, " << endl << "    Obstruction Framing, and Hubcap Lines OK (y|n) [y] ?  ";
-	std::string yesNo;
 	getline(cin, yesNo);
 	if (!yesNo.empty() & (yesNo == "n")){ 
 		cout << "You'll need to change values in VST.cfg.  Terminating.   Hit enter to exit program." << endl;
@@ -232,6 +207,8 @@ void setup(){
 	}
 	cv::destroyWindow("Full Frame");
 
+	filesList.open(dirPath + "\\files.txt"); // Done for main() to access files contained therein
+
 // Want a trace file?
 	pleaseTrace = false;
 	cout << endl << "Want a trace file (y/n) [n]? : ";
@@ -239,14 +216,14 @@ void setup(){
 	if (!yesNo.empty()) pleaseTrace = (yesNo == "y");
 
 // Open trace file (if requested) and stats file
-	if (files.size() > 1){ // give trace and stats files names based on directory name
-		if (pleaseTrace) traceFile.open(g.dataPathPrefix + DIR_SEP + "trace" + DIR_SEP + "trace_" + dirName + ".txt");
-		statsFile.open(g.dataPathPrefix + DIR_SEP + "stats" + DIR_SEP + "stats_" + dirName + ".csv");
+	if (yesNoAll == "*"){ // give trace and stats files names based on directory name
+		if (pleaseTrace) traceFile.open(g.dataPathPrefix + "\\trace\\trace_" + dirName + ".txt");
+		statsFile.open(g.dataPathPrefix + "\\stats\\stats_" + dirName + ".csv");
 	}
 	else{ // yesNoAll == "y" which means only one file to process; give it name corresponding to input file name
-		string d_t = get_date_and_time(files.front(), "_");
-		if (pleaseTrace) traceFile.open(g.dataPathPrefix + DIR_SEP + "trace" + DIR_SEP + "trace_" + d_t + ".txt");
-		statsFile.open(g.dataPathPrefix + DIR_SEP + "stats" + DIR_SEP + "stats_" + d_t + ".csv");
+		fileMid = fileName.substr(7, 14);
+		if (pleaseTrace) traceFile.open(g.dataPathPrefix + "\\trace\\trace_" + fileMid.substr(0, 8) + "_" + fileMid.substr(8, 6) + ".txt");
+		statsFile.open(g.dataPathPrefix + "\\stats\\stats_" + fileMid.substr(0, 8) + "_" + fileMid.substr(8, 6) + ".csv");
 	}
 
 	statsFile << ", , Frame, Direction, StartFrame, EndFrame, # Frames, StartPix, EndPix, DeltaPix, VehicleArea, , estSpeed" << endl;
@@ -292,14 +269,14 @@ void setup(){
 		getline(cin, answer);
 		if (!answer.empty()) minimumProfileArea = stoi(answer);
 		cout << endl;
-		if (files.size() > 1){ // give trace and stats files names based on directory name
-			hiLiteVideo.open(g.dataPathPrefix + DIR_SEP + "HiLites" + DIR_SEP + "Hilites_" + dirName + ".avi",
+		if (yesNoAll == "*"){ // give trace and stats files names based on directory name
+			hiLiteVideo.open(g.dataPathPrefix + "\\HiLites\\Hilites_" + dirName + ".avi",
 //				CV_FOURCC('X', '2', '6', '4'), capture.get(CV_CAP_PROP_FPS), Size(1280, 720), true);
 			-1, capture.get(CV_CAP_PROP_FPS), Size(1280, 720), true); // bug in OpenCV open function.  x264 has to be picked from list.  Argh.
 		}
 		else{ // yesNoAll == "y" which means only one file to process; give it name corresponding to input file name
-			string d_t = get_date_and_time(files.front(), "_");
-			hiLiteVideo.open(g.dataPathPrefix + DIR_SEP + "HiLites" + DIR_SEP + "Hilites_" + d_t + ".avi",
+			fileMid = fileName.substr(7, 14);
+			hiLiteVideo.open(g.dataPathPrefix + "\\HiLites\\Hilites_" + fileMid.substr(0, 8) + "_" + fileMid.substr(8, 6) + ".avi",
 //				CV_FOURCC('X', '2', '6', '4'), capture.get(CV_CAP_PROP_FPS), Size(1280, 720), true);
 			-1, capture.get(CV_CAP_PROP_FPS), Size(1280, 720), true); // bug in OpenCV open function.  x264 has to be picked from list.  Argh.
 			
@@ -418,14 +395,13 @@ void displayAnalysisGoingRight(int inFrameNum, int index, Rect rectangle, Overla
 		cv::line(AnalysisFrame, Point(x + wd, y), Point(x + wd, y + ht), Scalar(CVRed), 2);
 	else
 		cv::line(AnalysisFrame, Point(x + wd, y), Point(x + wd, y + ht), Scalar(CVBlue), 2);
-	if (estSpeed > 0) {
-		if (estSpeed <= speedLimit)
+	if (estSpeed > 0)  
+		if (estSpeed <= speedLimit)  
 			putText(AnalysisFrame, intToString(estSpeed) + " MPH", Point(g.pixelRight-180, 30), 2, 1, Scalar(CVGreen), 2);
 		else if (estSpeed < egregiousSpeedLowerBound) 
 			putText(AnalysisFrame, intToString(estSpeed) + " MPH", Point(g.pixelRight-180, 30), 2, 1, Scalar(CVYellow), 2);
-		else
+		else                         
 			putText(AnalysisFrame, intToString(estSpeed) + " MPH", Point(g.pixelRight-180, 30), 2, 1, Scalar(CVRed), 2);
-	}
 	if (highLightsPlease){
 		if (vehiclesGoingRight[index].getTrackStartPixel() == 0)
 			vehiclesGoingRight[index].holdFrame(AnalysisFrame); // if vehicle hasnt passed start post yet, keep last frame in case about to cross into speed zone.
@@ -461,14 +437,13 @@ void displayAnalysisGoingLeft(int inFrameNum, int index, Rect rectangle, Overlap
 		cv::line(AnalysisFrame, Point(x + wd, y), Point(x + wd, y + ht), Scalar(CVRed), 2);
 	else
 		cv::line(AnalysisFrame, Point(x + wd, y), Point(x + wd, y + ht), Scalar(CVGreen), 2);
-	if (estSpeed > 0) {
+	if (estSpeed > 0)
 		if(estSpeed <= speedLimit) 
 			putText(AnalysisFrame, intToString(estSpeed) + " MPH", Point(g.pixelLeft, 30), 2, 1, Scalar(CVGreen), 2);
 		else if (estSpeed < egregiousSpeedLowerBound)
 			putText(AnalysisFrame, intToString(estSpeed) + " MPH", Point(g.pixelLeft, 30), 2, 1, Scalar(CVYellow), 2);
 		else 
 			putText(AnalysisFrame, intToString(estSpeed) + " MPH", Point(g.pixelLeft, 30), 2, 1, Scalar(CVRed), 2);
-	}
 	if (highLightsPlease){
 		if (vehiclesGoingLeft[index].getTrackStartPixel() == 0) 
 			vehiclesGoingLeft[index].holdFrame(AnalysisFrame); // if vehicle hasnt passed start post yet, keep last frame in case about to cross into speed zone.
@@ -491,7 +466,7 @@ void displayAnalysisGoingLeft(int inFrameNum, int index, Rect rectangle, Overlap
 
 
 
-void logL2Rstats(bool isOK, int index, const string &d_t){
+void logL2Rstats(bool isOK, int index){
 // Final entries for L2R vehicle just completing speed analysis are placed in trace file and in stats files.  Video output to highlights
 //	file for qualifying vehicles is performed.
 	int frames = max(vehiclesGoingRight[index].getTrackEndFrame() - vehiclesGoingRight[index].getTrackStartFrame(), 1);
@@ -507,7 +482,7 @@ void logL2Rstats(bool isOK, int index, const string &d_t){
 		<< endl << "> > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > > >"
 		<< endl << endl << endl;
 	if ((estSpeed >= 18.0) && isOK){
-		statsFile << d_t << ", "
+		statsFile << fileName.substr(7, 8) << ", " << fileName.substr(15, 6) << ", "
 			<< frameNumber << ", " << g.L2RDirection << ", " << vehiclesGoingRight[index].getTrackStartFrame() << ", "
 			<< vehiclesGoingRight[index].getTrackEndFrame() << ", "
 			<< frames << ", "
@@ -557,7 +532,7 @@ void logL2Rstats(bool isOK, int index, const string &d_t){
 	}
 }
 
-void logR2Lstats(bool isOK, int index, const string &d_t){
+void logR2Lstats(bool isOK, int index){
 // Final entries for R2L vehicle just completing speed analysis are placed in trace file and in stats files.  Video output to highlights
 //	file for qualifying vehicles is performed.
 	int frames = max(vehiclesGoingLeft[index].getTrackEndFrame() - vehiclesGoingLeft[index].getTrackStartFrame(), 1);
@@ -574,7 +549,7 @@ void logR2Lstats(bool isOK, int index, const string &d_t){
 		<< endl << "< < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < <"
 		<< endl << endl << endl;
 	if ((estSpeed >= 18.0) && isOK){
-		statsFile << d_t << ", "
+		statsFile << fileName.substr(7, 8) << ", " << fileName.substr(15, 6) << ", "
 			<< frameNumber << ", " << g.R2LDirection << ", " << vehiclesGoingLeft[index].getTrackStartFrame() << ", "
 			<< vehiclesGoingLeft[index].getTrackEndFrame() << ", "
 			<< frames << ", "
@@ -677,12 +652,12 @@ OverlapType doesR2LOverlapAnyL2R(int R2LIndex, vector<Projection> vehiclesR2L, v
 //
 //  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  *  * 
 
-bool manageMovers(Mat wholeScenethreshImage, Mat &AnalysisFrame, const string &d_t){
+bool manageMovers(Mat wholeScenethreshImage, Mat &AnalysisFrame){
 
 /// < < < < < < < < < < < < < < < < < < < < < < < < < < G e t   P r o j e c t i o n s   f o r   v e h s   a l r e a d y   i n   t r a c k  > > > > > > > > > > > > > > > > 
 // Get all L2R vehicle projections
 	vector<Projection> projectedL2R;  // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	for (size_t index = 0; index < vehiclesGoingRight.size(); index++){
+	for (int index = 0; index < vehiclesGoingRight.size(); index++){
 		projectedL2R.push_back(vehiclesGoingRight[index].getBestProjection(g, frameNumber));
 		if (pleaseTrace) traceFile << endl << "<" << frameNumber << "> Project >>L2R>> vehicle[" << index << "]  Rect xywh: [" << projectedL2R[index].getBox().x << ", "
 			<< projectedL2R[index].getBox().y << ", " << projectedL2R[index].getBox().width << ",  " << projectedL2R[index].getBox().height
@@ -699,7 +674,7 @@ bool manageMovers(Mat wholeScenethreshImage, Mat &AnalysisFrame, const string &d
 
 // Get all R2L vehicle projections
 	vector<Projection> projectedR2L;  // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-	for (size_t index = 0; index < vehiclesGoingLeft.size(); index++){
+	for (int index = 0; index < vehiclesGoingLeft.size(); index++){
 		projectedR2L.push_back(vehiclesGoingLeft[index].getBestProjection(g, frameNumber));
 		if (pleaseTrace) traceFile << endl << "<" << frameNumber << "> Project <<R2L<< vehicle[" << index << "]  Rect xywh: [" << projectedR2L[index].getBox().x << ", "
 			<< projectedR2L[index].getBox().y << ", " << projectedR2L[index].getBox().width << ",  " << projectedR2L[index].getBox().height
@@ -721,7 +696,7 @@ bool manageMovers(Mat wholeScenethreshImage, Mat &AnalysisFrame, const string &d
 	if ((vehiclesGoingRight.size() > 0) && (projectedL2R.front().getVState() == exited)){
 		if (pleaseTrace) traceFile << endl << "<" << frameNumber << ">   # # # # # # # L2R vehicle just exited." << endl;
 //		cout << "<" << frameNumber << ">   # # # # # # # L2R vehicle just exited." << endl;
-		logL2Rstats(true, 0, d_t); //
+		logL2Rstats(true, 0); //
 		vehiclesGoingRight.erase(vehiclesGoingRight.begin());
 		projectedL2R.erase(projectedL2R.begin());
 	}
@@ -730,7 +705,7 @@ bool manageMovers(Mat wholeScenethreshImage, Mat &AnalysisFrame, const string &d
 	if ((vehiclesGoingLeft.size() > 0) && (projectedR2L.front().getVState() == exited)){
 		if (pleaseTrace) traceFile << endl << "<" << frameNumber << ">   # # # # # # # R2L vehicle just exited." << endl;
 //		cout << "<" << frameNumber << ">   # # # # # # # R2L vehicle just exited." << endl;
-		logR2Lstats(true, 0, d_t);
+		logR2Lstats(true, 0);
 		vehiclesGoingLeft.erase(vehiclesGoingLeft.begin());
 		projectedR2L.erase(projectedR2L.begin());
 	}
@@ -742,8 +717,8 @@ bool manageMovers(Mat wholeScenethreshImage, Mat &AnalysisFrame, const string &d
 		if (vehiclesGoingRight[index].getAmIOK() != ImOK) {
 			if (pleaseTrace) traceFile << endl << "<" << frameNumber << ">   # # # # # # # L2R vehicle[" << index << "] is being deleted: " << statusString(vehiclesGoingRight[index].getAmIOK()) << endl;
 //			cout << "<" << frameNumber << ">   # # # # # # # L2R vehicle[" << index << "] is being deleted: " << statusString(vehiclesGoingRight[index].getAmIOK()) << endl;
-			if (vehiclesGoingRight[index].getTrackEndPixel() > 0) logL2Rstats(true, index, d_t);
-			else logL2Rstats(false, /*vehiclesGoingRight[index].getAmIOK() == deleteWithStats*/ index, d_t);
+			if (vehiclesGoingRight[index].getTrackEndPixel() > 0) logL2Rstats(true, index);
+			else logL2Rstats(false, /*vehiclesGoingRight[index].getAmIOK() == deleteWithStats*/ index);
 			vehiclesGoingRight.erase(vehiclesGoingRight.begin() + index);
 			projectedL2R.erase(projectedL2R.begin() + index);
 		}
@@ -755,8 +730,8 @@ bool manageMovers(Mat wholeScenethreshImage, Mat &AnalysisFrame, const string &d
 		if (vehiclesGoingLeft[index].getAmIOK() != ImOK) {
 			if (pleaseTrace) traceFile << endl << "<" << frameNumber << ">   # # # # # # # R2L vehicle[" << index << "] is being deleted: " << statusString(vehiclesGoingLeft[index].getAmIOK()) << endl;
 //			cout << "<" << frameNumber << ">   # # # # # # # R2L vehicle[" << index << "] is being deleted: " << statusString(vehiclesGoingLeft[index].getAmIOK()) << endl;
-			if (vehiclesGoingLeft[index].getTrackEndPixel() > 0) logR2Lstats(true, index, d_t);
-			else logR2Lstats(false, /*vehiclesGoingLeft[index].getAmIOK() == deleteWithStats,*/ index, d_t);
+			if (vehiclesGoingLeft[index].getTrackEndPixel() > 0) logR2Lstats(true, index);
+			else logR2Lstats(false, /*vehiclesGoingLeft[index].getAmIOK() == deleteWithStats,*/ index);
 			vehiclesGoingLeft.erase(vehiclesGoingLeft.begin() + index);
 			projectedR2L.erase(projectedR2L.begin() + index);
 		}
@@ -955,16 +930,16 @@ bool manageMovers(Mat wholeScenethreshImage, Mat &AnalysisFrame, const string &d
 
 		else {  // Ok, scene is one that can be handled. Clear past info about passing vehicles, and then check for passing vehicles now.
 			if(vehiclesGoingRight.size() > 0)
-				for (size_t i = 0; i < vehiclesGoingRight.size(); i++) 
+				for (int i = 0; i < vehiclesGoingRight.size(); i++) 
 					vehiclesGoingRight[i].setOverlapStatus(none); // Reset any past L2R overlap determinations.
 			if (vehiclesGoingLeft.size() > 0)
-				for (size_t i = 0; i < vehiclesGoingLeft.size(); i++)
+				for (int i = 0; i < vehiclesGoingLeft.size(); i++)
 					vehiclesGoingLeft[i].setOverlapStatus(none); // Reset any past R2L overlap determinations.
 // -------------- Two or three vehicles in analysis zone, a least one in each direction......
 			if ((projectedL2R.size() * projectedR2L.size()) >= 1) { // Two vehs currently in track (ignoring just entered vehicles now), one in each direction;
-				for (size_t i = 0; i < projectedL2R.size(); i++)
+				for (int i = 0; i < projectedL2R.size(); i++)
 					vehiclesGoingRight[i].setOverlapStatus(doesL2ROverlapAnyR2L(i, projectedL2R, projectedR2L, projectedR2L.size()));
-				for (size_t i = 0; i < projectedR2L.size(); i++)
+				for (int i = 0; i < projectedR2L.size(); i++)
 					vehiclesGoingLeft[i].setOverlapStatus(doesR2LOverlapAnyL2R(i, projectedR2L, projectedL2R, projectedL2R.size()));
 			}
 
@@ -977,8 +952,8 @@ bool manageMovers(Mat wholeScenethreshImage, Mat &AnalysisFrame, const string &d
 		Rect objectBoundingRectangle[MAX_NUM_OBJECTS]; // bounding rectangles, formed in a direction sensitive manner
 
 		if (projectedL2R.size() > 0){ // All bidirectional cases considered by the time control gets here.
-			for (size_t index = 0; index < projectedL2R.size(); index++){
-				// First, focus the search for detected blobs to the region the vehicle is projected to occupy
+			for (int index = 0; index < projectedL2R.size(); index++){
+            // First, focus the search for detected blobs to the region the vehicle is projected to occupy
 				//find external contours of filtered image using openCV findContours function
 				contours.erase(contours.begin(), contours.end()); // Clear contours vector
 				hierarchy.erase(hierarchy.begin(), hierarchy.end());  // Clear hierarchy vector
@@ -1046,7 +1021,7 @@ bool manageMovers(Mat wholeScenethreshImage, Mat &AnalysisFrame, const string &d
 
 
 		if (0 < projectedR2L.size()) { 
-			for (size_t index = 0; index < projectedR2L.size(); index++){
+			for (int index = 0; index < projectedR2L.size(); index++){
 				// First, focus the search for detected blobs to the region the vehicle is projectyed to occupy
 				//find external contours of filtered image using openCV findContours function
 				contours.erase(contours.begin(), contours.end()); // Clear contours vector
@@ -1122,7 +1097,7 @@ bool manageMovers(Mat wholeScenethreshImage, Mat &AnalysisFrame, const string &d
 // ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^  M a i n  ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ ^ 
 //
 //  Process image data per user request.  Key call halfway down is this:
-//                                                    objectDetected = manageMovers(thresholdImage, ROIFr2, d_t);
+//                                                    objectDetected = manageMovers(thresholdImage, ROIFr2);
 // which causes processing of all known and newly entered vehicls to occur at time "frameNumber."  This one call exercises most of the code above
 // and most all of the code in vehicleDynamics.
 
@@ -1139,22 +1114,37 @@ int main(){
 
 //  * * * * * * * * * * * * * * * * * * * * * *  M a i n   L o o p   o v e r   o n e   o r   m o r e   i n p u t   f i l e s  * * * * * * * * * * * * * * * *
 
-	for (vector<string>::const_iterator fnp=files.begin(); fnp!=files.end(); ++fnp) {
-		const string fileName = *fnp;
 
-		cout << endl << "Now processing cam input file: " << fileName << endl;
-		if (pleaseTrace) traceFile << endl << "Now processing cam input file: " << fileName << endl;
-		vehiclesGoingRight.erase(vehiclesGoingRight.begin(), vehiclesGoingRight.end());  // Reinitialize
-		vehiclesGoingLeft.erase(vehiclesGoingLeft.begin(), vehiclesGoingLeft.end());   // Reinitialize  
-		bailing = false;  // Reinitialize
-		startFrame = 0.0;
+	while (moreFilesToDo){
+
+		if (yesNoAll == "*"){
+			if (getline(filesList, fileName)){
+				cout << endl << "Now processing cam input file: " << fileName << endl;
+				if (pleaseTrace) traceFile << endl << "Now processing cam input file: " << fileName << endl;
+				vehiclesGoingRight.erase(vehiclesGoingRight.begin(), vehiclesGoingRight.end());  // Reinitialize
+				vehiclesGoingLeft.erase(vehiclesGoingLeft.begin(), vehiclesGoingLeft.end());   // Reinitialize  
+				bailing = false;  // Reinitialize
+				startFrame = 0.0;
+			}
+			else{
+				cout << endl << "Done processing all input files: " << fileName << endl;
+				if (pleaseTrace) traceFile << endl << "Done processing all input files: " << fileName << endl;
+				moreFilesToDo = false;
+				filesList.close();
+				break; 
+			}
+		}
+		else {  // yesNoAll must == "y";  "fileName" is the name of the file to process
+			moreFilesToDo = false;
+			filesList.close();
+		}
 
 
 		// dirName is the directory name (only) in which input files reside.  Its name is expected to be of the form: yyyymmdd
 		// dirPath is the path to the directory in which input (.avi) files are located; it includes dirName at the end, but no trailing reverse slashes 
 		// fileName is the name of the current avi file to be processed.  Its form is "manual_" <yyyymmddhhmmss> ".avi"   <<-- no spaces
 
-		string FName = dirPath + DIR_SEP + fileName;
+		string FName = dirPath + "\\" + fileName;
 		cout << "Trying to capture from " + FName << endl;
 		capture.open(FName);
 
@@ -1170,8 +1160,8 @@ int main(){
 			return - 1;
 		}
 		double FPS = capture.get(CV_CAP_PROP_FPS);
-		if (fabs(FPS - 30.0) > 1e-6){
-			cout << "Frame rate is " << FPS << ", not 30.  Bailing";
+		if (FPS != 30.0){
+			cout << "Frame rate is not 30.  Bailing";
 			return -1;
 		}
 
@@ -1196,7 +1186,7 @@ int main(){
 			else cv::destroyWindow("Final Threshold Image");
 
 		// ************************************************* Vehicle motion analysis *****************************************************
-			objectDetected = manageMovers(thresholdImage, ROIFr2, get_date_and_time(fileName, ", "));
+			objectDetected = manageMovers(thresholdImage, ROIFr2);
 
 			frameNumber += 2;  // Note: frames are used in frame differencing operations only once each, so frame count jumps by two, not one.
 			                  // One could argue that using each frame as the second frame in a differencing operation, and then using it a second time
@@ -1253,9 +1243,6 @@ int main(){
 		capture.release();
 
 	} // looping over input files loop end
-
-	cout << endl << "Done processing all input files: " << files.back() << endl;
-	if (pleaseTrace) traceFile << endl << "Done processing all input files: " << files.back() << endl;
 
 //	if (highLightsPlease) hiLiteVideo.release();
 	if (pleaseTrace) traceFile.close();

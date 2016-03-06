@@ -24,8 +24,8 @@
 #pragma once
 #include "Globals.h"
 //#include <string>
-#include <opencv/cv.h>
-#include <opencv/highgui.h>
+#include <opencv\cv.h>
+#include <opencv\highgui.h>
 #include "Projection.h"
 #include "Snapshot.h"
 
@@ -94,7 +94,7 @@ private:
 
 
 
-	vector <Snapshot> snaps;  // Keeps a history of all logged snapshots of vehicle as it moves.
+	Vector <Snapshot> snaps;  // Keeps a history of all logged snapshots of vehicle as it moves.
 
 	direction vehicleDirection;  // left, or right?   L2R v. R2L
 	vehicleStatus vState; // entering, exiting, etc.
@@ -123,6 +123,8 @@ private:
 	double nextRearBumper = 0.0;  // Always contains the latest projected rear bumper value
 
 	OverlapType overlapStatus = none;  //Initially assume vehicle overlaps no others;
+
+	double LPFilterCoeff = 0.80;  // For filtering approximations of vehicle length (width)
 
 // for stats
 

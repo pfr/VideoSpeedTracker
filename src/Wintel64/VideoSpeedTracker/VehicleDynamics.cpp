@@ -122,7 +122,7 @@ Mat VehicleDynamics::getHeldFrame(){
 }
 
 Mat VehicleDynamics::getSavedFrame(int index){
-	if ((int)hiLiteFeeds.size() > index)
+	if (hiLiteFeeds.size() > index)
 		return hiLiteFeeds[index];
 	else return Mat();
 }
@@ -385,7 +385,7 @@ statusTypes VehicleDynamics::estimateNextVehicleData(Globals& g, int frameNum){
 			switch (vehicleDirection){
 			case L2R:
 				// Check for obstructions or apparent backward motion of front bumper raw data
-				if (((int(prevNextFrontBumper) >= g.obstruction[0]) && (int(prevNextFrontBumper) <= (g.obstruction[1] + g.obstruction_extent)))
+				if ((int(prevNextFrontBumper) >= g.obstruction[0]) && (int(prevNextFrontBumper) <= (g.obstruction[1] + g.obstruction_extent))
 					|| ((lastObservedBox.x + lastObservedBox.width) < (nextToLastBox.x + nextToLastBox.width + int(estVelocity / 2.0))) // Unacceptable backwards motion of actual data
 					|| (overlapStatus == frontOnly || overlapStatus == bothOverlap)){
 					FBPixel.push_back(prevNextFrontBumper);  // 
@@ -394,7 +394,7 @@ statusTypes VehicleDynamics::estimateNextVehicleData(Globals& g, int frameNum){
 				else FBPixel.push_back(double(lastObservedBox.x + lastObservedBox.width));
 				break;
 			case R2L:   //  R2L <<<<<
-				if (((int(prevNextFrontBumper) >= (g.obstruction[0] - g.obstruction_extent)) && (int(prevNextFrontBumper) <= g.obstruction[1]))
+				if ((int(prevNextFrontBumper) >= (g.obstruction[0] - g.obstruction_extent)) && (int(prevNextFrontBumper) <= g.obstruction[1])
 					|| (lastObservedBox.x > (nextToLastBox.x - int(estVelocity / 2.0))) // Unacceptable backwards motion of actual data
 					|| (overlapStatus == frontOnly || overlapStatus == bothOverlap)){
 					FBPixel.push_back(double(prevNextFrontBumper));
