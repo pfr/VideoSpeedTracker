@@ -26,14 +26,12 @@
 // Output is placed in subdirectory "forPosting"  with the prefix "for_post" prepended to the input file name.
 
 
-#include <opencv/cv.hpp>
-#include <opencv2/highgui/highgui.hpp>
+#include <opencv\cv.h>
+#include "opencv2\highgui\highgui.hpp"
 #include <iostream>
 #include <fstream>
 #include <sstream>
 #include <string>
-#include "../common/dirlist.h"
-#include "../common/portability.h"
 
 #define CVBlack 0,0,0
 #define CVCyan 255,255,153
@@ -44,6 +42,7 @@ using namespace cv;
 VideoCapture hiLiteVideoIn;  //Input hiLites video
 VideoWriter hiLiteVideoOut; // For writing highlights...the edited Scofflaws
 Mat frames[200];
+const int maxFramePtr = 199;
 int framePTR = 0;
 ifstream filesList;
 string fileName;  // Name of avi file currently being processed.
@@ -75,7 +74,7 @@ string trim(string toBeTrimmed){
 void replay(int inFramePTR, int inDelay){
 	for (int i = 0; i < inFramePTR; i++){
 		imshow("Next Frame", frames[i]);
-		waitKey(inDelay);
+		switch (waitKey(inDelay));
 	}
 }
 
@@ -98,24 +97,21 @@ int main(){
 	ifstream configIn("ProcessHiLites.cfg");
 	if (!configIn.good()){
 		cout << "Can't open ProcessHiLites.cfg.  Spinning for ctrl-c." << endl;
-		while (1) { getchar(); }
+		while (1){}
 	}
 	int lineNo = 0;
-	while (getline(configIn, inLine)) {
+	while (!configIn.eof()){
+		getline(configIn, inLine);
 		if (!configIn){
 			cout << "Unexpected error in config file.  Spinning for ctrl-c." << endl;
-			while (1){ getchar(); }
+			while (1){}
 		}
-		while (inLine.back() == '\r')
-			inLine.pop_back();
-		if (inLine.empty())
-			continue;   // blank line
 		if (getSides(inLine)){
 			lhs = trim(lhs);
 			rhs = trim(rhs);
 			if (lhs != lhsString[lineNo]){
 				cout << "Just read LHS doesn't match anything: <" << lhs << ">.  Spinning for ctrl-c." << endl;
-				while (1){ getchar(); }
+				while (1){}
 			}
 			switch (lineNo){
 			case 0:
@@ -133,7 +129,7 @@ int main(){
 			default:
 				if (lineNo > 2){
 					cout << "Too many lines in config file.  Spinning for ctrl-c." << endl;
-					while (1){ getchar(); }
+					while (1){}
 				}
 			} // switch
 			lineNo++;
@@ -141,38 +137,34 @@ int main(){
 		else{
 			cout << "getSides() failed in config reader.  Check VST.cfg syntax.   Spinning for ctrl-c. " << endl;
 			configIn.close();
-			while (1){ getchar(); }
+			while (1){}
 		}
 
 	} // while not eof in config file
 
-	string dirPath = dataPathPrefix + DIR_SEP + "HiLites";
-	vector<string> files = dir_to_list(dirPath);  // TODO: *.avi only
-	if (files.empty()) {
-		printf("No files in %s\n", dirPath.c_str());
-		exit(EXIT_FAILURE);
-	}
-	for (size_t i=0; i<files.size(); i++) {
-		printf("%2zu: %s\n", i, files[i].c_str());
-	}
-	while (fileName.empty()) {
-		if (cin.eof()) exit(EXIT_FAILURE);
-		cout << "Enter the nubmer of the file to use: " << flush;
-		string buf;
-		getline(cin, buf);
-		char *endptr;
-		size_t idx = strtoul(buf.c_str(), &endptr, 10);
-		if (!buf.empty() && !*endptr && idx < files.size()) {
-			fileName = files[idx];
+	string dirPath = dataPathPrefix + "\\HiLites";
+	string sysString = "dir " + dirPath + "\\*.avi /b > " + dirPath + "\\files.txt";
+	const char * c = sysString.c_str();
+	system(c); // copy the file names from the chosen directory to file "files.txt" in the same directory.
+	string yesNo = "n";
+	// Get file user wants
+	while (yesNo == "n"){
+		filesList.open(dirPath + "\\files.txt");
+		while (getline(filesList, fileName)){
+			cout << "Want the file " << fileName << "  (y/n) [n]: ";
+			getline(cin, yesNo);
+			if (yesNo == "y") break;  // User has chosen the file
+			else yesNo = "n";
 		}
+		filesList.close();
 	}
 
-	string fullName = dirPath + DIR_SEP + fileName;
+	string fullName = dirPath + "\\" + fileName;
 	cout << "Fullname is: <" << fullName << "> " << endl;
 	hiLiteVideoIn.open(fullName);
 	
 	if (!hiLiteVideoIn.isOpened()){
-		cout << "ERROR ACQUIRING VIDEO FEED" << endl;
+		cout << "ERROR ACQUIRING VIDEO FEED\n";
 		getchar();
 		return 0;
 	}
@@ -183,26 +175,26 @@ int main(){
 // speed zone, this may not work for you...parts of your speed zone may be cropped off the ends.
 		rectangle(frames[0], Rect(Point(leftSide, top), Point(leftSide + 639, top + 359)), Scalar(CVCyan), 4);
 		imshow("Next Frame", frames[0]);
-		waitKey(20);
-		string yesNo = "n";
+		switch (waitKey(20));
+		yesNo = "n";
 		cout << "Is this cropping OK for saved captures? (y/n) [y]: ";
 		getline(cin, yesNo);
 		if (yesNo == "n") return -1; // Coould modify this to move cropping rectangle around until user happy.
 	}
 
 	hiLiteVideoIn.release();
-	waitKey(20);
+	switch (waitKey(20));
 	hiLiteVideoIn.open(fullName);
 	if (!hiLiteVideoIn.isOpened()){
-		cout << "ERROR ACQUIRING VIDEO FEED" << endl;
+		cout << "ERROR ACQUIRING VIDEO FEED\n";
 		getchar();
 		return 0;
 	}
 
-	fullName = dirPath + DIR_SEP + "forPosting" + DIR_SEP + "forPost_" + fileName;
+	fullName = dirPath + "\\forPosting\\forPost_" + fileName;
 	hiLiteVideoOut.open(fullName, -1, hiLiteVideoIn.get(CV_CAP_PROP_FPS), Size(640, 360), true);
 	if (!hiLiteVideoOut.isOpened()){
-		cout << "ERROR Opening output file" << endl;
+		cout << "ERROR Opening output file\n";
 		getchar();
 		return 0;
 	}
@@ -220,7 +212,7 @@ int main(){
 				hiLiteVideoIn.read(frames[framePTR]);
 				if (!blackFrame(frames[framePTR])){  //  If this is a black frame, keep it but don't show it
 					imshow("Next Frame", frames[framePTR]);
-					waitKey(20);
+					switch (waitKey(20));
 				}
 				else {
 					atVehicleClipEnd = true;
