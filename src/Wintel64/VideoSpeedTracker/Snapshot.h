@@ -25,8 +25,8 @@
 #pragma once
 #include "Globals.h"
 //#include <string>
-#include <opencv\cv.h>
-#include <opencv\highgui.h>
+#include <opencv/cv.h>
+#include <opencv/highgui.h>
 
 using namespace std;
 using namespace cv;
