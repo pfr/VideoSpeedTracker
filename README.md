@@ -8,6 +8,8 @@ be sure to buy something like the TP-LINK TL-PoE150S - about $18 - to power it.)
 Win7telx64 executables have been added on 15 Feb 2016.  See the section named "Installing executables" in the
 User Manual.
 
+As of 28 March 2016, watch the use of the speed tracker in support of documenting Charlottesville, Virginia's current failures to address urban vehicular assault in its established residential neighborhoods at www.github.com/eyetach/CharlottesvilleSpeeds.  Wiki coming soon.
+
 Video example:
 
 [![Video example](http://img.youtube.com/vi/1HVkKysDvGA/0.jpg)](http://www.youtube.com/watch?v=1HVkKysDvGA "Video Speed Tracker on a 25 MPH Residential Street")
