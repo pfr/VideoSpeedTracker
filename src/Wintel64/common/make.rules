@@ -1,0 +1,19 @@
+CXXFLAGS  = -Wall -Werror -g
+LDLIBS    = -lopencv_core -lopencv_highgui -lopencv_imgproc
+
+ifeq ($(shell uname),Darwin)
+# Go get opencv3:
+#   brew install homebrew/science/opencv3
+# Here's where that lands:
+CPPFLAGS  = -I/usr/local/opt/opencv3/include
+LDFLAGS   = -L/usr/local/opt/opencv3/lib
+LDLIBS   += -lopencv_videoio 
+endif
+
+ifeq ($(shell uname),Linux)
+CPPFLAGS  = -I/usr/include/opencv
+endif
+
+
+# clang and g++ require c++11 for in-class const initialization
+CXXFLAGS += -std=c++11 
