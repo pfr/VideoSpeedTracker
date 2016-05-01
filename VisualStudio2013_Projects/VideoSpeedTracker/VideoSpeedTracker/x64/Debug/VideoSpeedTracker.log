@@ -1,0 +1,45 @@
+﻿Build started 2/10/2016 7:04:17 PM.
+     1>Project "G:\VisStudio2013\Projects\VideoSpeedTracker\VideoSpeedTracker\VideoSpeedTracker.vcxproj" on node 2 (Rebuild target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Ig:\builds\opencv2411\build\x64\vc12\..\..\include /Zi /nologo /W3 /WX- /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt ..\..\..\..\VideoSpeedTracker\VideoSpeedTracker\Globals.cpp ..\..\..\..\VideoSpeedTracker\VideoSpeedTracker\Projection.cpp ..\..\..\..\VideoSpeedTracker\VideoSpeedTracker\Roi.cpp ..\..\..\..\VideoSpeedTracker\VideoSpeedTracker\Snapshot.cpp ..\..\..\..\VideoSpeedTracker\VideoSpeedTracker\trafficReports.cpp ..\..\..\..\VideoSpeedTracker\VideoSpeedTracker\VehicleDynamics.cpp
+         VehicleDynamics.cpp
+     1>g:\builds\opencv2411\build\include\opencv2\flann\logger.h(66): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
+     1>..\..\..\..\VideoSpeedTracker\VideoSpeedTracker\VehicleDynamics.cpp(106): warning C4267: 'return' : conversion from 'size_t' to 'int', possible loss of data
+         trafficReports.cpp
+     1>..\..\..\..\VideoSpeedTracker\VideoSpeedTracker\trafficReports.cpp(657): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\..\..\..\VideoSpeedTracker\VideoSpeedTracker\trafficReports.cpp(670): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\..\..\..\VideoSpeedTracker\VideoSpeedTracker\trafficReports.cpp(684): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\..\..\..\VideoSpeedTracker\VideoSpeedTracker\trafficReports.cpp(702): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\..\..\..\VideoSpeedTracker\VideoSpeedTracker\trafficReports.cpp(731): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\..\..\..\VideoSpeedTracker\VideoSpeedTracker\trafficReports.cpp(759): warning C4267: '=' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\..\..\..\VideoSpeedTracker\VideoSpeedTracker\trafficReports.cpp(828): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\..\..\..\VideoSpeedTracker\VideoSpeedTracker\trafficReports.cpp(851): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\..\..\..\VideoSpeedTracker\VideoSpeedTracker\trafficReports.cpp(885): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>..\..\..\..\VideoSpeedTracker\VideoSpeedTracker\trafficReports.cpp(887): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+         Snapshot.cpp
+     1>g:\builds\opencv2411\build\include\opencv2\flann\logger.h(66): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
+         Roi.cpp
+     1>..\..\..\..\VideoSpeedTracker\VideoSpeedTracker\Roi.cpp(75): warning C4060: switch statement contains no 'case' or 'default' labels
+     1>..\..\..\..\VideoSpeedTracker\VideoSpeedTracker\Roi.cpp(77): warning C4060: switch statement contains no 'case' or 'default' labels
+     1>..\..\..\..\VideoSpeedTracker\VideoSpeedTracker\Roi.cpp(102): warning C4060: switch statement contains no 'case' or 'default' labels
+     1>..\..\..\..\VideoSpeedTracker\VideoSpeedTracker\Roi.cpp(104): warning C4060: switch statement contains no 'case' or 'default' labels
+         Projection.cpp
+     1>g:\builds\opencv2411\build\include\opencv2\flann\logger.h(66): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
+         Globals.cpp
+         Generating Code...
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"G:\VisStudio2013\Projects\VideoSpeedTracker\x64\Debug\VideoSpeedTracker.exe" /INCREMENTAL /NOLOGO /LIBPATH:g:\builds\opencv2411\build\x64\vc12\lib opencv_calib3d2411d.lib opencv_contrib2411d.lib opencv_core2411d.lib opencv_features2d2411d.lib opencv_flann2411d.lib opencv_gpu2411d.lib opencv_highgui2411d.lib opencv_imgproc2411d.lib opencv_legacy2411d.lib opencv_ml2411d.lib opencv_nonfree2411d.lib opencv_objdetect2411d.lib opencv_ocl2411d.lib opencv_photo2411d.lib opencv_stitching2411d.lib opencv_superres2411d.lib opencv_ts2411d.lib opencv_video2411d.lib opencv_videostab2411d.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"G:\VisStudio2013\Projects\VideoSpeedTracker\x64\Debug\VideoSpeedTracker.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"G:\VisStudio2013\Projects\VideoSpeedTracker\x64\Debug\VideoSpeedTracker.lib" /MACHINE:X64 x64\Debug\Globals.obj
+         x64\Debug\Projection.obj
+         x64\Debug\Roi.obj
+         x64\Debug\Snapshot.obj
+         x64\Debug\trafficReports.obj
+         x64\Debug\VehicleDynamics.obj
+         VideoSpeedTracker.vcxproj -> G:\VisStudio2013\Projects\VideoSpeedTracker\x64\Debug\VideoSpeedTracker.exe
+     1>Done Building Project "G:\VisStudio2013\Projects\VideoSpeedTracker\VideoSpeedTracker\VideoSpeedTracker.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:04.13

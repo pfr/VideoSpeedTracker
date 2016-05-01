@@ -1,0 +1,29 @@
+﻿Build started 4/28/2016 9:10:53 PM.
+     1>Project "G:\VisStudio2013\Projects\VideoSpeedTracker\VideoSpeedTracker\VideoSpeedTracker.vcxproj" on node 2 (Rebuild target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Ig:\builds\opencv2411\build\x64\vc12\..\..\include /Zi /nologo /W3 /WX- /O2 /Oi /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _LIB /D _CRT_SECURE_NO_WARNINGS /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Release\\" /Fd"x64\Release\vc120.pdb" /Gd /TP /errorReport:prompt Globals.cpp Projection.cpp Snapshot.cpp VehicleDynamics.cpp videoSpeedTracker.cpp
+         Globals.cpp
+         Projection.cpp
+         Snapshot.cpp
+         VehicleDynamics.cpp
+         videoSpeedTracker.cpp
+     1>videoSpeedTracker.cpp(818): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>videoSpeedTracker.cpp(831): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>videoSpeedTracker.cpp(847): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>videoSpeedTracker.cpp(865): warning C4267: 'initializing' : conversion from 'size_t' to 'int', possible loss of data
+     1>videoSpeedTracker.cpp(1044): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+     1>videoSpeedTracker.cpp(1046): warning C4267: 'argument' : conversion from 'size_t' to 'int', possible loss of data
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"G:\VisStudio2013\Projects\VideoSpeedTracker\x64\Release\VideoSpeedTracker.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:g:\builds\opencv2411\build\x64\vc12\lib opencv_calib3d2411.lib opencv_contrib2411.lib opencv_core2411.lib opencv_features2d2411.lib opencv_flann2411.lib opencv_gpu2411.lib opencv_highgui2411.lib opencv_imgproc2411.lib opencv_legacy2411.lib opencv_ml2411.lib opencv_nonfree2411.lib opencv_objdetect2411.lib opencv_ocl2411.lib opencv_photo2411.lib opencv_stitching2411.lib opencv_superres2411.lib opencv_ts2411.lib opencv_video2411.lib opencv_videostab2411.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"G:\VisStudio2013\Projects\VideoSpeedTracker\x64\Release\VideoSpeedTracker.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"G:\VisStudio2013\Projects\VideoSpeedTracker\x64\Release\VideoSpeedTracker.lib" /MACHINE:X64 x64\Release\Globals.obj
+         x64\Release\Projection.obj
+         x64\Release\Snapshot.obj
+         x64\Release\VehicleDynamics.obj
+         x64\Release\videoSpeedTracker.obj
+         Generating code
+         Finished generating code
+         VideoSpeedTracker.vcxproj -> G:\VisStudio2013\Projects\VideoSpeedTracker\x64\Release\VideoSpeedTracker.exe
+     1>Done Building Project "G:\VisStudio2013\Projects\VideoSpeedTracker\VideoSpeedTracker\VideoSpeedTracker.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:04.51
